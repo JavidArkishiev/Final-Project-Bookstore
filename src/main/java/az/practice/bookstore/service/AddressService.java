@@ -27,4 +27,17 @@ public class AddressService {
         return addressDto;
 
     }
+
+    public AddressDto updateAddress(Long userId, AddressDto addressDto) {
+        Users users = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("user not found :" + userId));
+        if (users != null) {
+            Address updateAddress = addressMapper.mapToAddressEntity(addressDto);
+            updateAddress.setId(users.getAddress().getId());
+            updateAddress.setUsers(users);
+            users.setAddress(updateAddress);
+            addressRepository.save(updateAddress);
+        }
+        return addressDto;
+    }
 }

@@ -2,8 +2,6 @@ package az.practice.bookstore.controller;
 
 import az.practice.bookstore.model.dto.request.AddressDto;
 import az.practice.bookstore.service.AddressService;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +19,14 @@ public class AddressController {
     public ResponseEntity<AddressDto> createAddress(@RequestParam Long userId,
                                                     @RequestBody AddressDto addressDto) {
         return new ResponseEntity<>(addressService.createAddress(userId, addressDto), HttpStatus.CREATED);
+
+    }
+
+    @PutMapping("/{userId}")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
+    public ResponseEntity<AddressDto> updateAddress(@RequestParam Long userId,
+                                                    @RequestBody AddressDto addressDto) {
+        return new ResponseEntity<>(addressService.updateAddress(userId, addressDto), HttpStatus.CREATED);
 
     }
 }

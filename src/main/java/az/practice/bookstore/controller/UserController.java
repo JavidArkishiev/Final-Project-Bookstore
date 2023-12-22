@@ -42,12 +42,12 @@ public class UserController {
         return ResponseEntity.ok(userServiceImpl.deleteById(id));
     }
 
-    @PutMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
-    public ResponseEntity<UserDto> updateUserById(@PathVariable Long id,
-                                                  @RequestBody @Valid UserDto requestDto) {
-        return new ResponseEntity<>(userServiceImpl.updateUser(id, requestDto), HttpStatus.OK);
-    }
+//    @PutMapping("/{id}")
+//    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
+//    public ResponseEntity<UserDto> updateUserById(@PathVariable Long id,
+//                                                  @RequestBody @Valid UserDto requestDto) {
+//        return new ResponseEntity<>(userServiceImpl.updateUser(id, requestDto), HttpStatus.OK);
+//    }
 
 
 }

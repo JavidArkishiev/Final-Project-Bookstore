@@ -13,7 +13,6 @@ import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -38,7 +37,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public void signUpUser(SignUpRequest signUpRequest) throws MessagingException {
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-            throw new RuntimeException("this email already exist");
+            throw new ExistsEmailException("this email already exist");
         }
 
         if (userRepository.existsByPhoneNumber(signUpRequest.getPhoneNumber())) {
@@ -63,7 +62,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public void signUpAdmin(SignUpRequest signUpRequest) throws MessagingException {
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-            throw new RuntimeException("this email already exist");
+            throw new ExistsEmailException("this email already exist");
         }
         if (userRepository.existsByPhoneNumber(signUpRequest.getPhoneNumber())) {
             throw new ExistsPhoneNumberException("this phone number already used");
@@ -91,7 +90,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new PasswordException("you can not assign new password yet. Please assign new password");
         }
         if (!user.isEnabled()) {
-            throw new AccountStatusException("your account is not active. you can login after one week");
+            throw new AccountStatusException("your account is not active. Please first of all verify your account");
 
         }
         try {
@@ -100,12 +99,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new PasswordException("Invalid email or password");
         }
 
-
         var jwt = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(new HashMap<>(), user);
-        if (user.getPassword() == null) {
-            throw new PasswordException("you can not assign new password yet. Please assign new password");
-        }
+
         LocalDateTime localDateTime = user.getOtpGeneratedTime();
         LocalDateTime now = LocalDateTime.now();
         long daysSinceDeactivation = ChronoUnit.DAYS.between(localDateTime, now);
