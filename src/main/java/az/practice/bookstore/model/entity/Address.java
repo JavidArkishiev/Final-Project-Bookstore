@@ -18,7 +18,7 @@ public class Address {
     private String streetName;
     private String houseNumber;
     private String postCode;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH,CascadeType.DETACH,CascadeType.MERGE})
     @JoinColumn(name = "users_id", referencedColumnName = "id")
     private Users users;
 

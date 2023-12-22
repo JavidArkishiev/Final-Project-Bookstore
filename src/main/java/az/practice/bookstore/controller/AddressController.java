@@ -26,7 +26,15 @@ public class AddressController {
     @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     public ResponseEntity<AddressDto> updateAddress(@RequestParam Long userId,
                                                     @RequestBody AddressDto addressDto) {
-        return new ResponseEntity<>(addressService.updateAddress(userId, addressDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(addressService.updateAddress(userId, addressDto), HttpStatus.OK);
+
+    }
+
+    @DeleteMapping("/{userId}")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
+    public ResponseEntity<String> deleteAddress(@RequestParam Long userId) {
+        addressService.deleteAddress(userId);
+        return ResponseEntity.ok("Success");
 
     }
 }

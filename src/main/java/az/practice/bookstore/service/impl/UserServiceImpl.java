@@ -1,5 +1,6 @@
 package az.practice.bookstore.service.impl;
 
+import az.practice.bookstore.enums.Role;
 import az.practice.bookstore.exception.ExistsEmailException;
 import az.practice.bookstore.exception.ExistsPhoneNumberException;
 import az.practice.bookstore.exception.UserNotFoundException;
@@ -18,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,21 +37,21 @@ public class UserServiceImpl implements UserService {
     private final CartRepository cartRepository;
 
 
-    public UserDto addUsers(UserDto userDto) {
-        if (userRepository.existsByEmail(userDto.getEmail())) {
-            throw new ExistsEmailException("this email already used " + userDto.getEmail());
-        }
-        if (userRepository.existsByPhoneNumber(userDto.getPhoneNumber())) {
-            throw new ExistsPhoneNumberException("this phone number already used");
-        }
-        Users usersEntity = userMapper.mapToUserEntity(userDto);
-        Address addressEntity = addressMapper.mapToAddressEntity(userDto.getAddressDto());
-        usersEntity.setAddress(addressEntity);
-        addressEntity.setUsers(usersEntity);
-
-        userRepository.save(usersEntity);
-        return userDto;
-    }
+//    public UserDto addUsers(UserDto userDto) {
+//        if (userRepository.existsByEmail(userDto.getEmail())) {
+//            throw new ExistsEmailException("this email already used " + userDto.getEmail());
+//        }
+//        if (userRepository.existsByPhoneNumber(userDto.getPhoneNumber())) {
+//            throw new ExistsPhoneNumberException("this phone number already used");
+//        }
+//        Users usersEntity = userMapper.mapToUserEntity(userDto);
+//        Address addressEntity = addressMapper.mapToAddressEntity(userDto.getAddressDto());
+//        usersEntity.setAddress(addressEntity);
+//        addressEntity.setUsers(usersEntity);
+//
+//        userRepository.save(usersEntity);
+//        return userDto;
+//    }
 
     public UserDto getById(Long id) {
         Users userEntity = userRepository.findById(id)
@@ -66,7 +68,7 @@ public class UserServiceImpl implements UserService {
                 .map(users -> {
                     UserDto userDto = userMapper.mapToUserDto(users);
                     AddressDto addressDto = addressMapper.mapToDto(users.getAddress());
-                    userDto.setAddressDto(addressDto);
+//                    userDto.setAddressDto(addressDto);
                     return userDto;
 
                 }).collect(Collectors.toList());
@@ -91,10 +93,8 @@ public class UserServiceImpl implements UserService {
         if (oldUser != null) {
             Users updateUsers = userMapper.mapToUserEntity(requestDto);
             Address updateAddress = addressMapper.mapToAddressEntity(requestDto.getAddressDto());
-
             updateAddress.setId(oldUser.getAddress().getId());
             updateUsers.setId(oldUser.getId());
-
             updateUsers.setAddress(updateAddress);
             updateAddress.setUsers(updateUsers);
             userRepository.save(updateUsers);
