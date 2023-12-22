@@ -1,7 +1,7 @@
 package az.practice.bookstore.model.mapper;
 
-import az.practice.bookstore.model.dto.OrderDetailsDto;
-import az.practice.bookstore.model.dto.OrderDto;
+import az.practice.bookstore.model.dto.request.OrderDetailsDto;
+import az.practice.bookstore.model.dto.request.OrderDto;
 import az.practice.bookstore.model.dto.response.OrderDetailsWithLocalDate;
 import az.practice.bookstore.model.dto.response.OrderResponseDto;
 import az.practice.bookstore.model.entity.Orders;

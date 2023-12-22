@@ -1,8 +1,7 @@
-package az.practice.bookstore.model.dto;
+package az.practice.bookstore.model.dto.request;
 
 import az.practice.bookstore.enums.Role;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,7 +23,6 @@ public class UserDto {
     @Pattern(regexp = "[0-9]{3}+[0-9]{3}+[0-9]{2}+[0-9]{2}")
     private String phoneNumber;
     private AddressDto addressDto;
-    private Role role;
 
 
 }

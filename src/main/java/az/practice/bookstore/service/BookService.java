@@ -2,9 +2,9 @@ package az.practice.bookstore.service;
 
 import az.practice.bookstore.exception.BookNotFoundException;
 import az.practice.bookstore.exception.ExistsSerialNumberException;
-import az.practice.bookstore.model.dto.AuthorsDto;
-import az.practice.bookstore.model.dto.BookDto;
-import az.practice.bookstore.model.dto.PublisherDto;
+import az.practice.bookstore.model.dto.request.AuthorsDto;
+import az.practice.bookstore.model.dto.request.BookDto;
+import az.practice.bookstore.model.dto.request.PublisherDto;
 import az.practice.bookstore.model.entity.Authors;
 import az.practice.bookstore.model.entity.Book;
 import az.practice.bookstore.model.entity.Publisher;

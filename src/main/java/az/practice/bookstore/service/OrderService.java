@@ -2,8 +2,8 @@ package az.practice.bookstore.service;
 
 import az.practice.bookstore.enums.OrderStatus;
 import az.practice.bookstore.exception.*;
-import az.practice.bookstore.model.dto.OrderDetailsDto;
-import az.practice.bookstore.model.dto.OrderDto;
+import az.practice.bookstore.model.dto.request.OrderDetailsDto;
+import az.practice.bookstore.model.dto.request.OrderDto;
 import az.practice.bookstore.model.dto.response.OrderDetailsWithLocalDate;
 import az.practice.bookstore.model.entity.*;
 import az.practice.bookstore.model.mapper.BookMapper;

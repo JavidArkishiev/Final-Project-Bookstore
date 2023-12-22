@@ -1,4 +1,4 @@
-package az.practice.bookstore.model.dto;
+package az.practice.bookstore.model.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

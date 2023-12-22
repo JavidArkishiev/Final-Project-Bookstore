@@ -1,6 +1,6 @@
 package az.practice.bookstore.model.mapper;
 
-import az.practice.bookstore.model.dto.AddressDto;
+import az.practice.bookstore.model.dto.request.AddressDto;
 import az.practice.bookstore.model.entity.Address;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;

@@ -1,6 +1,6 @@
 package az.practice.bookstore.model.mapper;
 
-import az.practice.bookstore.model.dto.ReviewDto;
+import az.practice.bookstore.model.dto.request.ReviewDto;
 import az.practice.bookstore.model.dto.response.ReviewDetailsDto;
 import az.practice.bookstore.model.entity.Review;
 import org.mapstruct.Mapper;

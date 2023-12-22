@@ -1,6 +1,6 @@
 package az.practice.bookstore.model.mapper;
 
-import az.practice.bookstore.model.dto.BookDto;
+import az.practice.bookstore.model.dto.request.BookDto;
 import az.practice.bookstore.model.dto.response.CartItemResponseDto;
 import az.practice.bookstore.model.entity.Book;
 import org.mapstruct.Mapper;

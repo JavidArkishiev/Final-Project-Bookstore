@@ -68,13 +68,33 @@ public class ExceptionHande {
         ErrorDetails errorDetails = new ErrorDetails(exception.getMessage(), LocalDate.now(), webRequest.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
+
     @ExceptionHandler(EmptyCartException.class)
     public ResponseEntity<?> handleCEmptyCartException(EmptyCartException exception, WebRequest webRequest) {
         ErrorDetails errorDetails = new ErrorDetails(exception.getMessage(), LocalDate.now(), webRequest.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
+
     @ExceptionHandler(ReviewNotFound.class)
     public ResponseEntity<?> handleReviewNotFound(ReviewNotFound exception, WebRequest webRequest) {
+        ErrorDetails errorDetails = new ErrorDetails(exception.getMessage(), LocalDate.now(), webRequest.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(PasswordException.class)
+    public ResponseEntity<?> handlePasswordException(PasswordException exception, WebRequest webRequest) {
+        ErrorDetails errorDetails = new ErrorDetails(exception.getMessage(), LocalDate.now(), webRequest.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(AccountStatusException.class)
+    public ResponseEntity<?> handleAccountStatusException(AccountStatusException exception, WebRequest webRequest) {
+        ErrorDetails errorDetails = new ErrorDetails(exception.getMessage(), LocalDate.now(), webRequest.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(OtpTimeException.class)
+    public ResponseEntity<?> handleOtpTimeException(OtpTimeException exception, WebRequest webRequest) {
         ErrorDetails errorDetails = new ErrorDetails(exception.getMessage(), LocalDate.now(), webRequest.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }

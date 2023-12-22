@@ -1,4 +1,4 @@
-package az.practice.bookstore.model.dto;
+package az.practice.bookstore.model.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.Max;

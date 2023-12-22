@@ -1,7 +1,7 @@
 package az.practice.bookstore.model.dto.response;
 
-import az.practice.bookstore.model.dto.BookDto;
-import az.practice.bookstore.model.dto.UserDto;
+import az.practice.bookstore.model.dto.request.BookDto;
+import az.practice.bookstore.model.dto.request.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
