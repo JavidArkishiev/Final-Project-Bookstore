@@ -19,12 +19,6 @@ spring:
             auth: true
             starttls:
               enable: true
-            spring:
-            mvc:
-              pathmatch:
-                matching-strategy: ant_path_matcher
-
-
 
   #    properties:
   #      hibernate:
@@ -37,9 +31,9 @@ spring:
 connection:
   liquibase:
     enabled: true
-    spring:
-      main:
-        allow-circular-references=true:
+#    spring:
+#      main:
+#        allow-circular-references=true:
 
 
 

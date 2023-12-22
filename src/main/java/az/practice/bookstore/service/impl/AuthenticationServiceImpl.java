@@ -1,10 +1,7 @@
 package az.practice.bookstore.service.impl;
 
 import az.practice.bookstore.enums.Role;
-import az.practice.bookstore.exception.AccountStatusException;
-import az.practice.bookstore.exception.OtpTimeException;
-import az.practice.bookstore.exception.PasswordException;
-import az.practice.bookstore.exception.UserNotFoundException;
+import az.practice.bookstore.exception.*;
 import az.practice.bookstore.model.dto.request.*;
 import az.practice.bookstore.model.dto.response.JwtAuthenticationResponse;
 import az.practice.bookstore.model.entity.Users;
@@ -16,6 +13,8 @@ import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +41,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new RuntimeException("this email already exist");
         }
 
+        if (userRepository.existsByPhoneNumber(signUpRequest.getPhoneNumber())) {
+            throw new ExistsPhoneNumberException("this phone number already used");
+        }
+
         var user = Users.builder().firstName(signUpRequest.getFirstName()).lastName(signUpRequest.getLastName())
                 .email(signUpRequest.getEmail())
                 .phoneNumber(signUpRequest.getPhoneNumber())
@@ -62,6 +65,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             throw new RuntimeException("this email already exist");
         }
+        if (userRepository.existsByPhoneNumber(signUpRequest.getPhoneNumber())) {
+            throw new ExistsPhoneNumberException("this phone number already used");
+        }
 
         var user = Users.builder().firstName(signUpRequest.getFirstName()).lastName(signUpRequest.getLastName())
                 .email(signUpRequest.getEmail())
@@ -79,10 +85,22 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     public JwtAuthenticationResponse sigIn(SignInRequest sign) throws PasswordException {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(sign.getEmail(),
-                sign.getPassword()));
         var user = userRepository.findByEmail(sign.getEmail())
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
+        if (user.getPassword() == null) {
+            throw new PasswordException("you can not assign new password yet. Please assign new password");
+        }
+        if (!user.isEnabled()) {
+            throw new AccountStatusException("your account is not active. you can login after one week");
+
+        }
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(sign.getEmail(), sign.getPassword()));
+        } catch (AuthenticationException e) {
+            throw new PasswordException("Invalid email or password");
+        }
+
+
         var jwt = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(new HashMap<>(), user);
         if (user.getPassword() == null) {
@@ -97,14 +115,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             userRepository.save(user);
             return JwtAuthenticationResponse.builder().accessToken(jwt).refreshToken(refreshToken).build();
         }
-        if (user.isEnabled() && passwordEncoder.matches(sign.getPassword(), user.getPassword())) {
-            return JwtAuthenticationResponse.builder().accessToken(jwt).refreshToken(refreshToken).build();
-
-        } else if (!user.getPassword().equals(sign.getPassword())) {
-            throw new PasswordException("invalid password");
-        } else
-            throw new AccountStatusException("your account is not active. you can login after one week");
-
+        //        } else if (!passwordEncoder.matches(sign.getPassword(), user.getPassword())) {
+        //            throw new PasswordException("invalid password");
+        if (user.isEnabled()) {
+            passwordEncoder.matches(sign.getPassword(), user.getPassword());
+        }
+        return JwtAuthenticationResponse.builder().accessToken(jwt).refreshToken(refreshToken).build();
     }
 
     public String generateOtp() {
@@ -126,7 +142,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .orElseThrow(() -> new UserNotFoundException("User not found :" + email));
 
         if (user.isEnabled()) {
-            throw new RuntimeException("User already verified");
+            throw new VerifyError("User already verified");
 
         } else if (otp.equals(user.getOtp()) && Duration.between(user.getOtpGeneratedTime()
                         , LocalDateTime.now()).
@@ -221,13 +237,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public void changePassword(Principal principal, ChangePasswordRequest request) {
         var user = (Users) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())) {
-            throw new IllegalStateException("current password not true");
+            throw new PasswordException("current password not true");
         }
         if (!request.getNewPassword().equals(request.getConfirmationPassword())) {
-            throw new IllegalStateException("Password is not same with confirm password ");
+            throw new PasswordException("newPassword is not same with confirm password ");
         }
-//        user.setPassword(request.getNewPassword());
-//        userRepository.save(user);
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        userRepository.save(user);
 
     }
 

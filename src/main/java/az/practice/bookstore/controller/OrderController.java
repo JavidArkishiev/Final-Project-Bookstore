@@ -53,7 +53,7 @@ public class OrderController {
     }
 
     @GetMapping("/all")
-    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<List<OrderDetailsWithLocalDate>> getAllOrderDetails() {
         List<OrderDetailsWithLocalDate> orderDetails = orderService.getAllOrderDetails();
         return new ResponseEntity<>(orderDetails, HttpStatus.OK);

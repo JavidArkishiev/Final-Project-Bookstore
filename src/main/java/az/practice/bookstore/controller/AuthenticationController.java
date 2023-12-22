@@ -7,6 +7,7 @@ import az.practice.bookstore.model.dto.response.JwtAuthenticationResponse;
 import az.practice.bookstore.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.mail.MessagingException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,26 +22,26 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("adminSignUp")
-    public ResponseEntity<String> signUpAdmin(@RequestBody SignUpRequest signUpRequest) throws MessagingException {
+    public ResponseEntity<String> signUpAdmin(@RequestBody @Valid SignUpRequest signUpRequest) throws MessagingException {
         authenticationService.signUpAdmin(signUpRequest);
         return ResponseEntity.ok("Registration successful." +
                 "Please verify your account for to do activate during 2 minutes.Check out your gmail.");
     }
 
     @PostMapping("userSignUp")
-    public ResponseEntity<String> signUpUser(@RequestBody SignUpRequest signUpRequest) throws MessagingException {
+    public ResponseEntity<String> signUpUser(@RequestBody @Valid SignUpRequest signUpRequest) throws MessagingException {
         authenticationService.signUpUser(signUpRequest);
         return ResponseEntity.ok("Registration successful." +
                 "Please verify your account for to do activate during 2 minutes.Check out your gmail.");
     }
 
     @PostMapping("/signIn")
-    public ResponseEntity<JwtAuthenticationResponse> signIn(@RequestBody SignInRequest sign) throws PasswordException {
+    public ResponseEntity<JwtAuthenticationResponse> signIn(@RequestBody @Valid SignInRequest sign) throws PasswordException {
         return ResponseEntity.ok(authenticationService.sigIn(sign));
     }
 
-    @PostMapping("/refresh")
-    public ResponseEntity<JwtAuthenticationResponse> refresh(@RequestBody RefreshTokenRequest request) {
+    @PostMapping("/refreshToken")
+    public ResponseEntity<JwtAuthenticationResponse> refresh(@RequestBody @Valid RefreshTokenRequest request) {
         return ResponseEntity.ok(authenticationService.refreshToken(request));
     }
 
