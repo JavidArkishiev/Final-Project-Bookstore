@@ -37,21 +37,21 @@ public class UserServiceImpl implements UserService {
     private final CartRepository cartRepository;
 
 
-//    public UserDto addUsers(UserDto userDto) {
-//        if (userRepository.existsByEmail(userDto.getEmail())) {
-//            throw new ExistsEmailException("this email already used " + userDto.getEmail());
-//        }
-//        if (userRepository.existsByPhoneNumber(userDto.getPhoneNumber())) {
-//            throw new ExistsPhoneNumberException("this phone number already used");
-//        }
-//        Users usersEntity = userMapper.mapToUserEntity(userDto);
-//        Address addressEntity = addressMapper.mapToAddressEntity(userDto.getAddressDto());
-//        usersEntity.setAddress(addressEntity);
-//        addressEntity.setUsers(usersEntity);
-//
-//        userRepository.save(usersEntity);
-//        return userDto;
-//    }
+    public UserDto addUsers(UserDto userDto) {
+        if (userRepository.existsByEmail(userDto.getEmail())) {
+            throw new ExistsEmailException("this email already used " + userDto.getEmail());
+        }
+        if (userRepository.existsByPhoneNumber(userDto.getPhoneNumber())) {
+            throw new ExistsPhoneNumberException("this phone number already used");
+        }
+        Users usersEntity = userMapper.mapToUserEntity(userDto);
+        Address addressEntity = addressMapper.mapToAddressEntity(userDto.getAddressDto());
+        usersEntity.setAddress(addressEntity);
+        addressEntity.setUsers(usersEntity);
+
+        userRepository.save(usersEntity);
+        return userDto;
+    }
 
     public UserDto getById(Long id) {
         Users userEntity = userRepository.findById(id)
