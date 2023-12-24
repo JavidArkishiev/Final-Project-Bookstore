@@ -12,6 +12,8 @@ import az.practice.bookstore.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class AddressService {
@@ -56,5 +58,16 @@ public class AddressService {
         users.setAddress(null);
 
         addressRepository.deleteById(address.getId());
+    }
+
+    public AddressDto getAddressById(Long userId) {
+        Users users = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("user not found"));
+        return addressMapper.mapToDto(users.getAddress());
+    }
+
+    public List<AddressDto> getAllAddress() {
+        List<Address> addressList = addressRepository.findAll();
+        return addressMapper.mapToAddressDtoList(addressList);
     }
 }

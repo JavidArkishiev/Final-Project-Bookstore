@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("address")
 @RequiredArgsConstructor
@@ -35,6 +37,20 @@ public class AddressController {
     public ResponseEntity<String> deleteAddress(@RequestParam Long userId) {
         addressService.deleteAddress(userId);
         return ResponseEntity.ok("Success");
+
+    }
+
+    @GetMapping("/{userId}")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
+    public ResponseEntity<AddressDto> getAddressById(@RequestParam Long userId) {
+        return new ResponseEntity<>(addressService.getAddressById(userId), HttpStatus.OK);
+
+    }
+
+    @GetMapping()
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
+    public ResponseEntity<List<AddressDto>> getAllAddress() {
+        return new ResponseEntity<>(addressService.getAllAddress(), HttpStatus.OK);
 
     }
 }
