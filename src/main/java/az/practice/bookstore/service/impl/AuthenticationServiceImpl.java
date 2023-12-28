@@ -111,8 +111,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             userRepository.save(user);
             return JwtAuthenticationResponse.builder().accessToken(jwt).refreshToken(refreshToken).build();
         }
-        //        } else if (!passwordEncoder.matches(sign.getPassword(), user.getPassword())) {
-        //            throw new PasswordException("invalid password");
         if (user.isEnabled()) {
             passwordEncoder.matches(sign.getPassword(), user.getPassword());
         }

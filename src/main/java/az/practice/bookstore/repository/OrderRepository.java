@@ -17,15 +17,5 @@ public interface OrderRepository extends JpaRepository<Orders, Long> {
             "GROUP BY u.firstName, u.lastName, b.title, o.quantity, o.orderHistory")
     List<OrderDetailsWithLocalDate> getOrderDetailsById(@Param("id") Long id);
 
-
-
-
-//    @Query("SELECT NEW az.practice.bookstore.model.dto.request.OrderDetailsDto(u.firstName, u.lastName, b.title, o.quantity, SUM(o.totalPrice)) " +
-//            "FROM Orders o " +
-//            "JOIN o.users u " +
-//            "JOIN o.books b " +
-//            "GROUP BY u.firstName, u.lastName, b.title, o.quantity")
-//    List<OrderDetailsDto> getAllOrderDetails();
-
     List<Orders> findByUsersId(Long userId);
 }

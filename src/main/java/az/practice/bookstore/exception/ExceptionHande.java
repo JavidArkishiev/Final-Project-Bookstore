@@ -110,4 +110,10 @@ public class ExceptionHande {
         ErrorDetails errorDetails = new ErrorDetails(exception.getMessage(), LocalDate.now(), webRequest.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(ExistsUserException.class)
+    public ResponseEntity<?> handleExistsUserException(ExistsUserException exception, WebRequest webRequest) {
+        ErrorDetails errorDetails = new ErrorDetails(exception.getMessage(), LocalDate.now(), webRequest.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+    }
 }

@@ -1,7 +1,7 @@
 package az.practice.bookstore.service;
 
 import az.practice.bookstore.exception.AddressNotfoundException;
-import az.practice.bookstore.exception.ExistsEmailException;
+import az.practice.bookstore.exception.ExistsUserException;
 import az.practice.bookstore.exception.UserNotFoundException;
 import az.practice.bookstore.model.dto.request.AddressDto;
 import az.practice.bookstore.model.entity.Address;
@@ -25,7 +25,7 @@ public class AddressService {
         Users users = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("user not found :" + userId));
         if (addressRepository.existsByUsersId(userId)) {
-            throw new ExistsEmailException("this userId already have a address ");
+            throw new ExistsUserException("this userId already have a address ");
         }
         Address address = addressMapper.mapToAddressEntity(addressDto);
         users.setAddress(address);

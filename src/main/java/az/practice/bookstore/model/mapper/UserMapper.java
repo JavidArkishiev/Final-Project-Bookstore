@@ -17,7 +17,7 @@ import java.util.List;
 public abstract class UserMapper {
 //    protected PasswordEncoder passwordEncoder;
 
-//    @Mapping(target = "password", expression = "java(passwordEncoder.encode(userDto.getPassword()))")
+    //    @Mapping(target = "password", expression = "java(passwordEncoder.encode(userDto.getPassword()))")
     @Mapping(target = "role", expression = "java(getDefaultRole())")
     public abstract Users mapToUserEntity(UserDto userDto);
 
