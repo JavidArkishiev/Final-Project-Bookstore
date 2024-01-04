@@ -102,9 +102,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         var jwt = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(new HashMap<>(), user);
 
-        LocalDateTime localDateTime = user.getOtpGeneratedTime();
+        LocalDateTime userOtpGeneratedTime = user.getOtpGeneratedTime();
         LocalDateTime now = LocalDateTime.now();
-        long daysSinceDeactivation = ChronoUnit.DAYS.between(localDateTime, now);
+        long daysSinceDeactivation = ChronoUnit.DAYS.between(userOtpGeneratedTime, now);
         if (daysSinceDeactivation >= 7) {
             user.setEnabled(true);
             user.setOtpGeneratedTime(now);

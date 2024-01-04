@@ -101,6 +101,8 @@ public class OrderService {
     }
 
     public List<OrderDetailsDto> getOrdersTotalAmountByUserId(Long userId) {
+        userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("user not found " + userId));
+
         List<Orders> ordersList = orderRepository.findByUsersId(userId);
         if (ordersList.isEmpty()) {
             throw new UserNotFoundException("Orders not found for user with ID: " + userId);
@@ -197,7 +199,11 @@ public class OrderService {
     }
 
     public List<OrderDetailsWithLocalDate> getDifferentTimeOrdersByUserId(Long userId) {
+        userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("user not found " + userId));
         List<Orders> ordersList = orderRepository.findByUsersId(userId);
+        if (ordersList.isEmpty()) {
+            throw new UserNotFoundException("Orders not found for user with ID: " + userId);
+        }
         return ordersList.stream()
                 .map(orderMapper::OrderDetailsWithLocalDate)
                 .collect(Collectors.toList());
