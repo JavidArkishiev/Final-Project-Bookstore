@@ -138,18 +138,21 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (user.isEnabled()) {
             throw new VerifyError("User already verified");
 
-        } else if (otp.equals(user.getOtp()) && Duration.between(user.getOtpGeneratedTime()
+        }
+        if (!otp.equals(user.getOtp())) {
+            throw new OtpTimeException("otp is not equals");
+
+        }
+        if (Duration.between(user.getOtpGeneratedTime()
                         , LocalDateTime.now()).
 
-                getSeconds() < (2 * 60)) {
+                getSeconds() < 2 * 60) {
             user.setEnabled(true);
             userRepository.save(user);
-//        } else if (!email.equals(user.getEmail())) {
-//            throw new RuntimeException("email not equals");
 
         } else throw new
-
                 OtpTimeException("opt time is over.please regenerateOtp");
+
 
     }
 
