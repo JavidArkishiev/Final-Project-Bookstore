@@ -25,13 +25,13 @@ public class UserController {
 //    }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     public ResponseEntity<UserDto> getById(@PathVariable Long id) {
         return new ResponseEntity<>(userServiceImpl.getById(id), HttpStatus.OK);
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     public ResponseEntity<List<UserDto>> getAllUser() {
         return new ResponseEntity<>(userServiceImpl.getAllUser(), HttpStatus.OK);
     }
